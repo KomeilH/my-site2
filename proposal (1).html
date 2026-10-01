@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>یه سوال مهم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #241019;
+    --bg-mid: #3c2030;
+    --rose: #cf8ea0;
+    --rose-soft: #d8bcc4;
+    --peach: #e8cba8;
+    --cream: #f5ece4;
+    --shadow: rgba(36, 16, 25, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Vazirmatn', sans-serif;
+    background: radial-gradient(circle at 50% 20%, var(--bg-mid), var(--bg-deep) 70%);
+    color: var(--cream);
+  }
+
+  .stage {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+
+  /* floating ambient hearts */
+  .floaters {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .floaters span {
+    position: absolute;
+    bottom: -10%;
+    font-size: 22px;
+    opacity: 0.35;
+    color: var(--rose-soft);
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    from { transform: translateY(0) rotate(0deg); }
+    to { transform: translateY(-115vh) rotate(25deg); }
+  }
+
+  .eyebrow {
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.08em;
+    font-size: 13px;
+    color: var(--rose-soft);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.85;
+  }
+
+  .headline {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(28px, 7vw, 46px);
+    font-weight: 900;
+    line-height: 1.5;
+    max-width: 720px;
+    margin: 0 0 8px;
+    text-shadow: 0 6px 24px var(--shadow);
+  }
+
+  .headline .accent {
+    color: var(--rose);
+  }
+
+  .sub {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(14px, 3vw, 17px);
+    color: var(--rose-soft);
+    margin-bottom: 46px;
+    opacity: 0.9;
+  }
+
+  .heart-mark {
+    position: relative;
+    z-index: 1;
+    font-size: 40px;
+    margin-bottom: 18px;
+    animation: beat 1.15s ease-in-out infinite;
+  }
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.15); }
+    40% { transform: scale(0.95); }
+  }
+
+  .btn-row {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+  }
+
+  button {
+    font-family: 'Vazirmatn', sans-serif;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform 0.15s ease;
+  }
+
+  #yesBtn {
+    background: linear-gradient(135deg, var(--rose), #dba3ae);
+    color: #2b1420;
+    font-size: 25px;
+    padding: 20px 52px;
+    box-shadow: 0 10px 30px var(--shadow);
+  }
+  #yesBtn:hover {
+    transform: scale(1.06);
+  }
+  #yesBtn:active {
+    transform: scale(0.97);
+  }
+
+  #noBtn {
+    background: rgba(247, 236, 226, 0.12);
+    color: var(--cream);
+    border: 1.5px solid rgba(247, 236, 226, 0.4);
+    font-size: 17px;
+    padding: 13px 32px;
+    position: relative;
+    transition: top 0.28s cubic-bezier(.4,1.6,.6,1), left 0.28s cubic-bezier(.4,1.6,.6,1), font-size 0.28s ease, padding 0.28s ease, opacity 0.28s ease;
+  }
+
+  .hint {
+    position: relative;
+    z-index: 1;
+    margin-top: 30px;
+    font-size: 12.5px;
+    color: rgba(255, 243, 230, 0.55);
+  }
+
+  /* success screen */
+  .success {
+    position: fixed;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 20;
+    background: radial-gradient(circle at 50% 30%, var(--bg-mid), var(--bg-deep) 75%);
+    padding: 24px;
+  }
+  .success.show { display: flex; }
+
+  .success .big-heart {
+    font-size: 64px;
+    animation: pop 0.5s ease;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.25); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  .success h1 {
+    font-size: clamp(26px, 6vw, 40px);
+    margin: 18px 0 10px;
+    font-weight: 900;
+    color: var(--rose);
+    text-shadow: 0 6px 24px var(--shadow);
+  }
+
+  .success p {
+    font-size: clamp(14px, 3vw, 17px);
+    color: var(--rose-soft);
+    max-width: 520px;
+  }
+
+  .confetti {
+    position: fixed;
+    top: -6%;
+    width: 10px;
+    height: 16px;
+    border-radius: 3px;
+    z-index: 21;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(118vh) rotate(540deg); opacity: 0.9; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floaters span, .heart-mark, .success .big-heart { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="floaters" id="floaters"></div>
+
+  <div class="heart-mark">💗</div>
+  <div class="eyebrow">یه سوال مهم</div>
+  <h1 class="headline">درسته که آرزوته<br><span class="accent">منو بگیری؟</span></h1>
+  <p class="sub">فقط یکی از این دوتا رو میتونی انتخاب کنی...</p>
+
+  <div class="btn-row">
+    <button id="yesBtn" onclick="sayYes()">بله ❤️</button>
+    <button id="noBtn" onmouseenter="dodge()" onclick="dodge()" ontouchstart="dodgeTouch(event)">نه</button>
+  </div>
+</div>
+
+<div class="success" id="success">
+  <div class="big-heart">🎉💖</div>
+  <h1>اگه پسر خوبی باشی شاید به آرزوت برسی 😂</h1>
+</div>
+
+<script>
+  const noBtn = document.getElementById('noBtn');
+  const stage = document.getElementById('stage');
+  let shrinkStep = 0;
+  const maxShrink = 9;
+  let placed = false;
+
+  function placeInitial() {
+    const rect = noBtn.getBoundingClientRect();
+    // switch out of the normal flex flow into fixed positioning now,
+    // seeded with its current on-screen spot so there's no jump
+    noBtn.style.position = 'fixed';
+    noBtn.style.top = rect.top + 'px';
+    noBtn.style.left = rect.left + 'px';
+    placed = true;
+  }
+
+  function dodge() {
+    if (!placed) placeInitial();
+
+    shrinkStep = Math.min(shrinkStep + 1, maxShrink);
+
+    const fontSize = Math.max(17 - shrinkStep * 1.5, 8);
+    const padV = Math.max(13 - shrinkStep * 1.2, 4);
+    const padH = Math.max(32 - shrinkStep * 3.2, 10);
+    noBtn.style.fontSize = fontSize + 'px';
+    noBtn.style.padding = padV + 'px ' + padH + 'px';
+
+    // measure size AFTER shrinking so placement matches the new size
+    const btnW = noBtn.offsetWidth;
+    const btnH = noBtn.offsetHeight;
+    const margin = 16;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // build a "keep-out" zone around the yes button, then only place
+    // the no button in one of the bands fully OUTSIDE that zone —
+    // this guarantees no overlap, instead of hoping a random guess misses it
+    const yesRect = document.getElementById('yesBtn').getBoundingClientRect();
+    const pad = 36;
+    const exclLeft = yesRect.left - pad;
+    const exclRight = yesRect.right + pad;
+    const exclTop = yesRect.top - pad;
+    const exclBottom = yesRect.bottom + pad;
+
+    const bands = [];
+    if (exclTop - margin >= btnH) {
+      bands.push({ minX: margin, maxX: vw - margin - btnW, minY: margin, maxY: exclTop - btnH });
+    }
+    if (vh - margin - exclBottom >= btnH) {
+      bands.push({ minX: margin, maxX: vw - margin - btnW, minY: exclBottom, maxY: vh - margin - btnH });
+    }
+    if (exclLeft - margin >= btnW) {
+      bands.push({ minX: margin, maxX: exclLeft - btnW, minY: margin, maxY: vh - margin - btnH });
+    }
+    if (vw - margin - exclRight >= btnW) {
+      bands.push({ minX: exclRight, maxX: vw - margin - btnW, minY: margin, maxY: vh - margin - btnH });
+    }
+
+    let newLeft, newTop;
+    if (bands.length === 0) {
+      // extreme edge case (tiny viewport): fall back to a corner
+      newLeft = margin;
+      newTop = margin;
+    } else {
+      const band = bands[Math.floor(Math.random() * bands.length)];
+      const spanX = Math.max(0, band.maxX - band.minX);
+      const spanY = Math.max(0, band.maxY - band.minY);
+      newLeft = band.minX + Math.random() * spanX;
+      newTop = band.minY + Math.random() * spanY;
+    }
+
+    noBtn.style.left = newLeft + 'px';
+    noBtn.style.top = newTop + 'px';
+
+    if (shrinkStep >= maxShrink) {
+      noBtn.style.opacity = '0.35';
+      noBtn.style.pointerEvents = 'none';
+    }
+  }
+
+  function dodgeTouch(e) {
+    e.preventDefault();
+    dodge();
+  }
+
+  function sayYes() {
+    document.getElementById('success').classList.add('show');
+    launchConfetti();
+  }
+
+  function launchConfetti() {
+    const colors = ['#cf8ea0', '#d8bcc4', '#e8cba8', '#f5ece4', '#dba3ae'];
+    const hearts = ['💗', '💖', '💕', '✨'];
+    const total = 90;
+
+    for (let i = 0; i < total; i++) {
+      const useHeart = Math.random() < 0.35;
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.animationDuration = (2.4 + Math.random() * 2.2) + 's';
+      c.style.animationDelay = (Math.random() * 1.4) + 's';
+
+      if (useHeart) {
+        c.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        c.style.background = 'transparent';
+        c.style.fontSize = (16 + Math.random() * 16) + 'px';
+        c.style.width = 'auto';
+        c.style.height = 'auto';
+        c.style.borderRadius = '0';
+      } else {
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5200);
+    }
+  }
+
+  // ambient floating hearts
+  const floaters = document.getElementById('floaters');
+  const symbols = ['💗', '♥', '✨'];
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('span');
+    s.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    s.style.left = Math.random() * 100 + '%';
+    s.style.fontSize = (14 + Math.random() * 18) + 'px';
+    s.style.animationDuration = (7 + Math.random() * 8) + 's';
+    s.style.animationDelay = (Math.random() * 6) + 's';
+    floaters.appendChild(s);
+  }
+
+  window.addEventListener('resize', () => { placed = false; });
+</script>
+
+</body>
+</html>
