@@ -379,10 +379,13 @@
   window.addEventListener('resize', () => { placed = false; });
 </script>
 
-  <p>پخش آهنگ:</p>
-<audio controls>
+<p>پخش آهنگ:</p>
+<button onclick="document.getElementById('myAudio').play()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+  ▶️ پخش موسیقی
+</button>
+
+<audio id="myAudio" loop>
   <source src="song.mp3" type="audio/mpeg">
-  مرورگر شما از پخش صدا پشتیبانی نمی‌کند.
 </audio>
   
 </body>
