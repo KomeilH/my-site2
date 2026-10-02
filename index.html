@@ -224,6 +224,10 @@
 </head>
 <body>
 
+  <audio id="bgMusic" autoplay loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+  
 <div class="stage" id="stage">
   <div class="floaters" id="floaters"></div>
 
@@ -378,15 +382,6 @@
 
   window.addEventListener('resize', () => { placed = false; });
 </script>
-
-<p>پخش آهنگ:</p>
-<button onclick="document.getElementById('myAudio').play()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-  ▶️ پخش موسیقی
-</button>
-
-<audio id="myAudio" loop>
-  <source src="song.mp3" type="audio/mpeg">
-</audio>
   
 </body>
 </html>
